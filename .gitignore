@@ -1,0 +1,7 @@
+node_modules/
+dist/
+release/
+backup/
+.memory/
+dev-key.seed
+package-lock.json
