@@ -2,31 +2,27 @@ import { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { useWeather } from './useWeather'
 import { getWeatherIcon, dataIcons } from './iconMap'
-import { X } from 'lucide-react'
-import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogBody } from '@qomicex/plugin-ui'
+import { RefreshCw } from 'lucide-react'
+import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogBody, Button, Input } from '@qomicex/plugin-ui'
 import './index.css'
 
 function Card() {
-  const { data, loading } = useWeather()
+  const { data, loading, refreshing, refetch } = useWeather()
   const [dlgOpen, setDlgOpen] = useState(false)
-  const [dlgData, setDlgData] = useState(null)
+  const [cityInput, setCityInput] = useState('')
 
   useEffect(() => {
     document.body.style.cssText = 'margin:0;overflow:hidden;background:transparent;font-family:system-ui,sans-serif;color:hsl(var(--foreground))'
   }, [])
 
-  const openDialog = async () => {
+  const openDialog = () => {
     if (loading || !data) return
+    setCityInput(data.city || '')
     setDlgOpen(true)
-    setDlgData(data)
-  }
-
-  if (loading) {
-    return <div className="p-3 text-xs text-muted-foreground">加载天气…</div>
   }
 
   if (!data) {
-    return <div className="p-3 text-xs text-muted-foreground">天气获取失败</div>
+    return <div className="p-3 text-xs text-muted-foreground">{loading ? '加载天气…' : '天气获取失败'}</div>
   }
 
   const Icon = getWeatherIcon(data.weather_icon)
@@ -58,14 +54,24 @@ function Card() {
         <div className="text-[10px] text-muted-foreground/60 mt-1">点击查看详情 · 7 天预报</div>
       </div>
 
-      {dlgOpen && <Dialog open onClose={() => setDlgOpen(false)}>
-        <DialogContent data={dlgData} onClose={() => setDlgOpen(false)} />
-      </Dialog>}
+      {dlgOpen && (
+        <Dialog open onClose={() => setDlgOpen(false)}>
+          <DialogContent
+            data={data}
+            loading={loading || refreshing}
+            cityInput={cityInput}
+            onCityInput={setCityInput}
+            onSearch={() => refetch(cityInput.trim(), true)}
+            onRefresh={() => refetch(undefined, true)}
+            onClose={() => setDlgOpen(false)}
+          />
+        </Dialog>
+      )}
     </>
   )
 }
 
-function DialogContent({ data, onClose }) {
+function DialogContent({ data, loading, cityInput, onCityInput, onSearch, onRefresh, onClose }) {
   if (!data) return null
 
   const city = [data.province, data.city, data.district].filter(Boolean).join(' ')
@@ -98,6 +104,21 @@ function DialogContent({ data, onClose }) {
         <DialogDescription>{data.weather || ''} · 更新于 {data.report_time || ''}</DialogDescription>
       </DialogHeader>
       <DialogBody>
+        {/* City search */}
+        <div className="flex gap-2 mb-3.5 items-center">
+          <Input
+            value={cityInput}
+            onChange={e => onCityInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') onSearch() }}
+            placeholder="城市（留空自动定位）"
+            className="flex-1"
+          />
+          <Button variant="primary" size="sm" disabled={loading} onClick={onSearch}>查询</Button>
+          <Button variant="ghost" size="sm" disabled={loading} onClick={onRefresh}>
+            <RefreshCw size={14} /> 刷新
+          </Button>
+        </div>
+
         {/* Current */}
         <div className="flex items-center gap-3.5 mb-3.5 p-3 rounded-[10px] bg-background">
           <Icon size={44} strokeWidth={1.6} />

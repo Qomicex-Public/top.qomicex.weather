@@ -11,7 +11,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        header: resolve(__dirname, 'weather-header.html'),
         card: resolve(__dirname, 'weather-card.html'),
       },
     },

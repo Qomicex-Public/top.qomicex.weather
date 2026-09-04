@@ -1,7 +1,7 @@
 {
   "id": "top.qomicex.weather",
   "name": "天气",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "minLauncherVersion": "0.1.0",
   "layers": [
     "l2"
@@ -17,11 +17,6 @@
   },
   "contributes": {
     "slots": [
-      {
-        "slot": "header:right",
-        "file": "dist/weather-header.html",
-        "height": 36
-      },
       {
         "slot": "dashboard:widgets",
         "file": "dist/weather-card.html",
