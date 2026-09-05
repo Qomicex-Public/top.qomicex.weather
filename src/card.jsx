@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { useWeather } from './useWeather'
-import { getWeatherIcon } from './iconMap'
+import { useWeather } from './useWeather.js'
+import { getWeatherIcon } from './iconMap.js'
 import './index.css'
 
 const PLUGIN_PAGE = '/plugins/p/top.qomicex.weather'

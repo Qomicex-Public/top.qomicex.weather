@@ -10,8 +10,7 @@
     "network:cors_proxy",
     "cache:access",
     "config:read",
-    "config:write",
-    "ui:navigate"
+    "config:write"
   ],
   "entry": {
     "frontend": "dist/index.html"
