@@ -1,7 +1,7 @@
 {
   "id": "top.qomicex.weather",
   "name": "天气",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "minLauncherVersion": "0.1.0",
   "layers": [
     "l2"
@@ -10,7 +10,8 @@
     "network:cors_proxy",
     "cache:access",
     "config:read",
-    "config:write"
+    "config:write",
+    "ui:navigate"
   ],
   "entry": {
     "frontend": "dist/index.html"
@@ -19,9 +20,11 @@
     "slots": [
       {
         "slot": "dashboard:widgets",
-        "file": "dist/weather-card.html",
-        "height": 170
+        "file": "dist/weather-card.html"
       }
+    ],
+    "settingsPages": [
+      "dist/settings.html"
     ]
   }
 }

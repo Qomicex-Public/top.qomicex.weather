@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>天气设置</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: system-ui, sans-serif; color: hsl(var(--foreground)); background: transparent; }
+  </style>
+</head>
+<body>
+  <div class="p-row p-row--between p-mb-2">
+    <div>
+      <div>城市</div>
+      <div class="p-text-xs" style="color: hsl(var(--muted-foreground))">留空自动定位；修改后卡片下次刷新生效（最长约 5 分钟）</div>
+    </div>
+    <input id="city" class="p-input" type="text" placeholder="如：北京" style="width: 180px" />
+  </div>
+  <script>
+    const api = window.__PLUGIN_API__
+    api.call('getSettings').then((s) => {
+      document.getElementById('city').value = s.city ?? ''
+    })
+    document.getElementById('city').addEventListener('change', (e) =>
+      api.call('setSettings', 'city', e.target.value.trim()))
+  </script>
+</body>
+</html>

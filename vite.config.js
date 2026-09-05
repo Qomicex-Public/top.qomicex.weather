@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         card: resolve(__dirname, 'weather-card.html'),
+        settings: resolve(__dirname, 'settings.html'),
       },
     },
   },
